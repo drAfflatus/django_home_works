@@ -13,9 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from unittest.mock import patch
+
 
 from django.urls import path
+from calculator.views import show_recip
+from calculator.views import DATA
 
-urlpatterns = [
-    # здесь зарегистрируйте вашу view-функцию
-]
+
+urlpatterns = []
+for keys in DATA.keys():
+    urlpatterns.append(path(keys+"/", show_recip))

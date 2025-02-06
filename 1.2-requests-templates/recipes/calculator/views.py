@@ -1,3 +1,6 @@
+from lib2to3.fixes.fix_input import context
+import datetime
+from django.http import HttpResponse
 from django.shortcuts import render
 
 DATA = {
@@ -16,8 +19,14 @@ DATA = {
         'сыр, ломтик': 1,
         'помидор, ломтик': 1,
     },
+    'чай': {
+        'чай, пакетик': 1,
+        'лимон, ломтик': 1,
+        'сахар, ч.л': 3,
+    },
     # можете добавить свои рецепты ;)
 }
+
 
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
@@ -28,3 +37,19 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+
+
+
+def show_recip(request):
+    count_potion = request.GET.get('servings',1)
+    aa= request.path[1:-1]
+    el_dict = dict(DATA.get(aa))
+    change_dict = el_dict
+
+    for key, value in el_dict.items():
+        print(type(value))  # Вы
+        el_dict[key]=value*int(count_potion)
+    context ={'recipe':el_dict}
+
+
+    return render(request,'calculator/index.html',context)
